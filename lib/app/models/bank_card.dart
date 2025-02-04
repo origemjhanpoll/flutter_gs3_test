@@ -1,9 +1,10 @@
 import 'package:equatable/equatable.dart';
-import '../../models/Transaction.dart'; // Importando a classe Transaction
+import '../models/transaction.dart';
 
 class BankCard extends Equatable {
   final int id;
   final String number;
+  final String bank;
   final String type;
   final String brand;
   final String limitAvailable;
@@ -13,6 +14,7 @@ class BankCard extends Equatable {
   const BankCard({
     required this.id,
     required this.number,
+    required this.bank,
     required this.type,
     required this.brand,
     required this.limitAvailable,
@@ -24,6 +26,7 @@ class BankCard extends Equatable {
     return BankCard(
       id: json['id'],
       number: json['number'],
+      bank: json['bank'],
       type: json['type'],
       brand: json['brand'],
       limitAvailable: json['limit_available'],
@@ -38,6 +41,7 @@ class BankCard extends Equatable {
     return {
       "id": id,
       "number": number,
+      "bank": bank,
       "type": type,
       "brand": brand,
       "limit_available": limitAvailable,
@@ -49,6 +53,7 @@ class BankCard extends Equatable {
   BankCard copyWith({
     int? id,
     String? number,
+    String? bank,
     String? type,
     String? brand,
     String? limitAvailable,
@@ -58,6 +63,7 @@ class BankCard extends Equatable {
     return BankCard(
       id: id ?? this.id,
       number: number ?? this.number,
+      bank: bank ?? this.bank,
       type: type ?? this.type,
       brand: brand ?? this.brand,
       limitAvailable: limitAvailable ?? this.limitAvailable,
@@ -70,6 +76,7 @@ class BankCard extends Equatable {
   List<Object?> get props => [
         id,
         number,
+        bank,
         type,
         brand,
         limitAvailable,

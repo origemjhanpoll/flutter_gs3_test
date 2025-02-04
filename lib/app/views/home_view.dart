@@ -70,6 +70,8 @@ class _HomeViewState extends State<HomeView> {
       body: Consumer<CardListViewModel>(
         builder: (context, viewModel, child) {
           final cards = viewModel.cards;
+          final transactions = cards[viewModel.selectedCardIndex].transactions;
+
           if (viewModel.isLoading) {
             return Center(child: CircularProgressIndicator());
           } else if (viewModel.isError) {
@@ -105,24 +107,24 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount:
-                        cards[viewModel.selectedCardIndex].transactions.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      final transaction = cards[viewModel.selectedCardIndex]
-                          .transactions[index];
-                      return TransactionWidget(
-                        id: transaction.id,
-                        merchant: transaction.merchant,
-                        amount: transaction.amount,
-                        installments: transaction.installments,
-                        date: transaction.date,
-                        category: transaction.category,
-                      );
-                    },
-                  ),
-                ),
+                  child: transactions.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: transactions.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            final transaction = transactions[index];
+                            return TransactionWidget(
+                              id: transaction.id,
+                              merchant: transaction.merchant,
+                              amount: transaction.amount,
+                              installments: transaction.installments,
+                              date: transaction.date,
+                              category: transaction.category,
+                            );
+                          },
+                        )
+                      : Center(child: Text('Nenhum transação disponível.')),
+                )
               ],
             );
           }

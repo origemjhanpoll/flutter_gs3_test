@@ -3,6 +3,7 @@
     {
       "id": 1001,
       "number": "5621",
+      "bank": "Banco do Brasil",
       "type": "Crédito",
       "brand": "Visa",
       "limit_available": "7.867,80",
@@ -53,6 +54,7 @@
     {
       "id": 1002,
       "number": "8976",
+      "bank": "Itaú",
       "type": "Débito",
       "brand": "Mastercard",
       "limit_available": "2.500,00",
