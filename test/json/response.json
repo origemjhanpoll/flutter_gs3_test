@@ -1,0 +1,104 @@
+{
+  "cards": [
+    {
+      "id": 1001,
+      "number": "5621",
+      "type": "Crédito",
+      "brand": "Visa",
+      "limit_available": "7.867,80",
+      "best_purchase_day": 20,
+      "transactions": [
+        {
+          "id": 101,
+          "merchant": "Apple",
+          "amount": "545,99",
+          "installments": 12,
+          "date": "2025-02-03T22:35:00Z",
+          "category": "Tecnologia"
+        },
+        {
+          "id": 102,
+          "merchant": "Uber",
+          "amount": "12,96",
+          "installments": 1,
+          "date": "2025-02-03T15:25:00Z",
+          "category": "Transporte"
+        },
+        {
+          "id": 103,
+          "merchant": "Amazon",
+          "amount": "199,99",
+          "installments": 5,
+          "date": "2025-02-02T18:12:00Z",
+          "category": "Compras Online"
+        },
+        {
+          "id": 104,
+          "merchant": "Netflix",
+          "amount": "39,90",
+          "installments": 1,
+          "date": "2025-02-01T08:45:00Z",
+          "category": "Entretenimento"
+        },
+        {
+          "id": 105,
+          "merchant": "McDonald's",
+          "amount": "28,50",
+          "installments": 1,
+          "date": "2025-01-31T20:30:00Z",
+          "category": "Alimentação"
+        }
+      ]
+    },
+    {
+      "id": 1002,
+      "number": "8976",
+      "type": "Débito",
+      "brand": "Mastercard",
+      "limit_available": "2.500,00",
+      "best_purchase_day": null,
+      "transactions": [
+        {
+          "id": 201,
+          "merchant": "Carrefour",
+          "amount": "349,76",
+          "installments": 3,
+          "date": "2025-02-02T09:34:00Z",
+          "category": "Supermercado"
+        },
+        {
+          "id": 202,
+          "merchant": "Spotify",
+          "amount": "19,90",
+          "installments": 1,
+          "date": "2025-02-01T07:10:00Z",
+          "category": "Assinaturas"
+        },
+        {
+          "id": 203,
+          "merchant": "Posto Shell",
+          "amount": "220,00",
+          "installments": 1,
+          "date": "2025-01-30T18:50:00Z",
+          "category": "Combustível"
+        },
+        {
+          "id": 204,
+          "merchant": "Farmácia Pague Menos",
+          "amount": "75,60",
+          "installments": 2,
+          "date": "2025-01-28T12:25:00Z",
+          "category": "Saúde"
+        },
+        {
+          "id": 205,
+          "merchant": "Magazine Luiza",
+          "amount": "799,90",
+          "installments": 10,
+          "date": "2025-01-25T15:40:00Z",
+          "category": "Eletrodomésticos"
+        }
+      ]
+    }
+  ]
+}
