@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'Transaction.dart'; // Importando a classe Transaction
+import '../../models/Transaction.dart'; // Importando a classe Transaction
 
 class BankCard extends Equatable {
   final int id;

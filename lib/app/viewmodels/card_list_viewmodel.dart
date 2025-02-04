@@ -7,6 +7,7 @@ class CardListViewModel with ChangeNotifier {
   List<BankCard> _cards = [];
   bool _isLoading = false;
   String? _error;
+  int _selectedCardIndex = 0;
 
   List<BankCard> get cards => _cards;
   bool get isLoading => _isLoading;
@@ -14,6 +15,7 @@ class CardListViewModel with ChangeNotifier {
   bool get isLoaded => _cards.isNotEmpty && _error == null;
   String? get error => _error;
   bool get isError => _error != null;
+  int get selectedCardIndex => _selectedCardIndex;
 
   final CardService _cardService = CardService();
 
@@ -30,5 +32,10 @@ class CardListViewModel with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  void setSelectedCardIndex(int index) {
+    _selectedCardIndex = index;
+    notifyListeners();
   }
 }
