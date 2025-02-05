@@ -67,7 +67,18 @@ class _HomeViewState extends State<HomeView> {
 
     return Scaffold(
       drawer: Drawer(
-        child: Center(child: Text('Drawer vazio')),
+        child: Center(
+          child: Text.rich(
+            TextSpan(
+              text: 'Olá, ',
+              children: [
+                TextSpan(
+                    text: 'Cliente',
+                    style: TextStyle(fontWeight: FontWeight.bold))
+              ],
+            ),
+          ),
+        ),
       ),
       appBar: AppBar(
         iconTheme: IconThemeData(color: theme.primaryColor),
@@ -165,7 +176,8 @@ class _HomeViewState extends State<HomeView> {
                         children: [
                           Text(
                             'Ver todos',
-                            style: theme.textTheme.bodySmall,
+                            style: theme.textTheme.bodySmall!
+                                .copyWith(color: theme.primaryColor),
                           ),
                           Icon(Icons.chevron_right, color: theme.primaryColor),
                         ],

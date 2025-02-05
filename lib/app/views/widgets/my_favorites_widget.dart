@@ -55,7 +55,8 @@ class MyFavoritesWidget extends StatelessWidget {
                 children: [
                   Text(
                     'Personalizar',
-                    style: theme.textTheme.bodySmall,
+                    style: theme.textTheme.bodySmall!
+                        .copyWith(color: theme.primaryColor),
                   ),
                   SvgPicture.asset(
                     'assets/icons/more.svg',
