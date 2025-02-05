@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gs3_test/core/constants/padding_size.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../atoms/icon_box_widget.dart';
+
 class FavoriteWidget extends StatelessWidget {
   final VoidCallback? onTap;
   final String text;
@@ -27,22 +29,8 @@ class FavoriteWidget extends StatelessWidget {
         child: Column(
           spacing: PaddingSize.small * 0.5,
           children: [
-            DecoratedBox(
-                decoration: BoxDecoration(
-                    color: theme.colorScheme.secondaryContainer,
-                    borderRadius: BorderRadius.circular(12.0)),
-                child: Padding(
-                  padding: EdgeInsets.all(PaddingSize.medium),
-                  child: SvgPicture.asset(
-                    asset,
-                    colorFilter: ColorFilter.mode(
-                        theme.colorScheme.primary, BlendMode.srcIn),
-                  ),
-                )),
-            Text(
-              text,
-              style: theme.textTheme.bodySmall,
-            )
+            IconBoxWidget(asset: asset),
+            Text(text, style: theme.textTheme.bodySmall)
           ],
         ),
       ),

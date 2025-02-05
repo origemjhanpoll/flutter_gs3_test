@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gs3_test/app/views/widgets/atoms/icon_box_widget.dart';
 import 'package:flutter_gs3_test/core/constants/padding_size.dart';
 import 'package:flutter_gs3_test/core/utils/format_date.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,18 +29,9 @@ class TransactionWidget extends StatelessWidget {
     return ListTile(
       title: Text(merchant),
       subtitle: Text(formatDateWithHours(date)),
-      leading: DecoratedBox(
-        decoration: BoxDecoration(
-            color: theme.colorScheme.secondaryContainer,
-            borderRadius: BorderRadius.circular(12.0)),
-        child: Padding(
-          padding: EdgeInsets.all(PaddingSize.small),
-          child: SvgPicture.asset(
-            _getCategoryIcon(category),
-            colorFilter:
-                ColorFilter.mode(theme.colorScheme.primary, BlendMode.srcIn),
-          ),
-        ),
+      leading: IconBoxWidget(
+        padding: EdgeInsets.all(PaddingSize.small),
+        asset: _getCategoryIcon(category),
       ),
       titleTextStyle: theme.textTheme.titleMedium,
       subtitleTextStyle:
