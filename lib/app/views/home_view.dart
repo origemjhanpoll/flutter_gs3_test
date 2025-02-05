@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gs3_test/app/views/empty_view.dart';
-import 'package:flutter_gs3_test/app/views/widgets/card_widget.dart';
-import 'package:flutter_gs3_test/app/views/widgets/my_favorites_widget.dart';
+import 'package:flutter_gs3_test/app/views/widgets/bottom_navigation_custom_widget.dart';
+import 'package:flutter_gs3_test/app/views/widgets/card_list_widget.dart';
+import 'package:flutter_gs3_test/app/views/widgets/favorites_widget.dart';
+import 'package:flutter_gs3_test/app/views/widgets/header_widget.dart';
+import 'package:flutter_gs3_test/app/views/widgets/transaction_list_widget.dart';
 import 'package:flutter_gs3_test/core/constants/padding_size.dart';
-import 'package:flutter_gs3_test/core/utils/format_date.dart';
 import 'package:flutter_gs3_test/core/utils/go_next_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/card_list_viewmodel.dart';
-import 'widgets/transaction_widget.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -18,7 +19,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final ScrollController _scrollControllerCard = ScrollController();
   final ScrollController _scrollController = ScrollController();
   final PageController _pageController = PageController();
   late CardListViewModel viewModel;
@@ -30,13 +30,18 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     viewModel = context.read<CardListViewModel>();
-    _scrollControllerCard.addListener(_updateSelectedCardIndex);
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  void _updateListTransaction(int index) {
+    viewModel.setSelectedCardIndex(index);
+    _scrollController.animateTo(
+      140.0,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _onNavigationTapped(int index) {
     _pageController.animateToPage(
       index,
       duration: Duration(milliseconds: 300),
@@ -44,42 +49,11 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  void _updateSelectedCardIndex() {
-    final newIndex = (_scrollControllerCard.offset / cardSize.width).round();
-    if (newIndex != viewModel.selectedCardIndex) {
-      viewModel.setSelectedCardIndex(newIndex);
-      _scrollController.animateTo(
-        150.0,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
-
-  void _onCardTap(int index) {
-    if (index != viewModel.selectedCardIndex) {
-      _scrollToIndex(index);
-      Future.delayed(Duration(milliseconds: 300), () {
-        viewModel.setSelectedCardIndex(index);
-      });
-    }
-  }
-
-  void _scrollToIndex(int index) {
-    final double offset = index * cardSize.width;
-    _scrollControllerCard.animateTo(
-      offset,
-      duration: Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
-  }
-
   @override
   void dispose() {
-    _scrollControllerCard.removeListener(_updateSelectedCardIndex);
-    _scrollControllerCard.dispose();
     _scrollController.dispose();
     _pageController.dispose();
+    viewModel.dispose();
     super.dispose();
   }
 
@@ -153,124 +127,51 @@ class _HomeViewState extends State<HomeView> {
 
                 return Column(
                   children: [
-                    SizedBox(
-                      height: cardSize.height + PaddingSize.extraLarge,
-                      child: ListView.separated(
-                        controller: _scrollControllerCard,
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: cards.length,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: PaddingSize.medium),
-                        itemBuilder: (context, index) {
-                          final card = cards[index];
-                          return CardWidget(
-                            onTap: () => _onCardTap(index),
-                            size: cardSize,
-                            color: _getBrandColor(card.brand, theme),
-                            id: card.id,
-                            number: card.number,
-                            bank: card.bank,
-                            type: card.type,
-                            brand: card.brand,
-                            limitAvailable: card.limitAvailable,
-                            bestPurchaseDay: card.bestPurchaseDay,
-                          );
-                        },
-                        separatorBuilder: (context, index) => SizedBox.fromSize(
-                          size: Size.fromWidth(PaddingSize.medium),
-                        ),
-                      ),
+                    CardListWidget(
+                      cards: cards,
+                      value: viewModel.selectedCardIndex,
+                      onChange: _updateListTransaction,
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(PaddingSize.medium)
-                          .copyWith(bottom: 0),
-                      child: Divider(height: 1),
+                    Divider(
+                      indent: PaddingSize.medium,
+                      endIndent: PaddingSize.medium,
+                      height: PaddingSize.large,
                     ),
                     Expanded(
                       child: SingleChildScrollView(
                         controller: _scrollController,
                         child: Column(
                           children: [
-                            MyFavoritesWidget(
+                            HeaderWidget(
+                              onTap: () => goNewPage(
+                                  title: 'Meus Favoritos', context: context),
+                              title: 'Meus favoritos',
+                              actionText: 'Personalizar',
+                              action: SvgPicture.asset(
+                                'assets/icons/more.svg',
+                                width: 18.0,
+                                height: 18.0,
+                                colorFilter: ColorFilter.mode(
+                                    theme.colorScheme.primary, BlendMode.srcIn),
+                              ),
+                            ),
+                            FavoritesWidget(
                                 onTapItem: (item) =>
                                     goNewPage(title: item, context: context),
                                 onTap: () => goNewPage(
                                     title: 'Meus favoritos', context: context)),
-                            ListTile(
-                              title: Text('Últimos lançamentos'),
-                              contentPadding: EdgeInsets.zero.copyWith(
-                                  left: PaddingSize.medium,
-                                  right: PaddingSize.small),
-                              titleTextStyle: theme.textTheme.titleMedium!
-                                  .copyWith(fontWeight: FontWeight.bold),
-                              trailing: InkWell(
-                                borderRadius: BorderRadius.circular(12.0),
-                                onTap: () => goNewPage(
-                                    title: 'Últimos Lançamentos',
-                                    context: context),
-                                child: Padding(
-                                  padding: EdgeInsets.all(PaddingSize.small),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        'Ver todos',
-                                        style: theme.textTheme.bodySmall!
-                                            .copyWith(
-                                                color: theme.primaryColor),
-                                      ),
-                                      Icon(Icons.chevron_right,
-                                          color: theme.primaryColor),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                            HeaderWidget(
+                              onTap: () => goNewPage(
+                                  title: 'Últimos lançamentos',
+                                  context: context),
+                              title: 'Últimos lançamentos',
+                              actionText: 'Ver todos',
+                              action: Icon(Icons.chevron_right,
+                                  color: theme.primaryColor),
                             ),
                             transactions.isNotEmpty
-                                ? ListView.separated(
-                                    itemCount: transactions.length,
-                                    shrinkWrap: true,
-                                    primary: false,
-                                    itemBuilder: (context, index) {
-                                      final transaction = transactions[index];
-                                      final showDate = index == 0 ||
-                                          formatDate(transactions[index - 1]
-                                                  .date) !=
-                                              formatDate(transaction.date);
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          if (showDate)
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal:
-                                                      PaddingSize.medium),
-                                              child: Text(
-                                                formatDate(transaction.date),
-                                                style: theme
-                                                    .textTheme.bodyLarge!
-                                                    .copyWith(
-                                                  color: theme.primaryColor,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          TransactionWidget(
-                                            id: transaction.id,
-                                            merchant: transaction.merchant,
-                                            amount: transaction.amount,
-                                            installments:
-                                                transaction.installments,
-                                            date: transaction.date,
-                                            category: transaction.category,
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) =>
-                                        Divider(indent: 16.0, endIndent: 16.0),
+                                ? TransactionListWidget(
+                                    transactions: transactions,
                                   )
                                 : Center(
                                     child: Text('Nenhum transação disponível.'))
@@ -283,82 +184,24 @@ class _HomeViewState extends State<HomeView> {
               }
             },
           ),
-          EmptyView(),
-          EmptyView(),
-          EmptyView(),
+          EmptyView(
+            text: 'Párgina de Faturas',
+            asset: 'assets/icons/tab-invoice.svg',
+          ),
+          EmptyView(
+            text: 'Párgina de Cartões',
+            asset: 'assets/icons/tab-card.svg',
+          ),
+          EmptyView(
+            text: 'Párgina de Compras',
+            asset: 'assets/icons/tab-shop.svg',
+          ),
         ],
       ),
-      bottomNavigationBar: DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(36.0)),
-          border: Border.all(
-            color: Colors.grey.shade300,
-            width: 1,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(1.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(36.0)),
-            child: BottomNavigationBar(
-              onTap: _onItemTapped,
-              currentIndex: _selectedIndex,
-              selectedItemColor: theme.primaryColor,
-              unselectedItemColor: theme.hintColor,
-              type: BottomNavigationBarType.fixed,
-              items: [
-                BottomNavigationBarItem(
-                  label: 'Home',
-                  icon: SvgPicture.asset('assets/icons/tab-home.svg'),
-                  activeIcon: SvgPicture.asset(
-                    'assets/icons/tab-home.svg',
-                    colorFilter:
-                        ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
-                  ),
-                ),
-                BottomNavigationBarItem(
-                  label: 'Fatura',
-                  icon: SvgPicture.asset('assets/icons/tab-invoice.svg'),
-                  activeIcon: SvgPicture.asset(
-                    'assets/icons/tab-invoice.svg',
-                    colorFilter:
-                        ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
-                  ),
-                ),
-                BottomNavigationBarItem(
-                  label: 'Cartão',
-                  icon: SvgPicture.asset('assets/icons/tab-card.svg'),
-                  activeIcon: SvgPicture.asset(
-                    'assets/icons/tab-card.svg',
-                    colorFilter:
-                        ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
-                  ),
-                ),
-                BottomNavigationBarItem(
-                  label: 'Shop',
-                  icon: SvgPicture.asset('assets/icons/tab-shop.svg'),
-                  activeIcon: SvgPicture.asset(
-                    'assets/icons/tab-shop.svg',
-                    colorFilter:
-                        ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+      bottomNavigationBar: BottomNavigationCustomWidget(
+        currentIndex: _selectedIndex,
+        onTap: (index) => _onNavigationTapped(index),
       ),
     );
-  }
-
-  Color _getBrandColor(String brand, ThemeData theme) {
-    switch (brand) {
-      case 'Visa':
-        return theme.primaryColor;
-      case 'Mastercard':
-        return const Color(0xFF00494B);
-      default:
-        return theme.colorScheme.primary;
-    }
   }
 }
