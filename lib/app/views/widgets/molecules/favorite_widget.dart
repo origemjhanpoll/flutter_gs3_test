@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gs3_test/core/constants/padding_size.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../atoms/icon_box_widget.dart';
 
