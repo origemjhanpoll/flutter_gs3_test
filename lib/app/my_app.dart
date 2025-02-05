@@ -8,10 +8,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = Color(0xFF346CBD);
     return MaterialApp(
       title: 'Meus Cartões',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        primaryColor: color,
+        colorScheme: ColorScheme.fromSeed(seedColor: color),
         useMaterial3: true,
       ),
       home: ChangeNotifierProvider(
