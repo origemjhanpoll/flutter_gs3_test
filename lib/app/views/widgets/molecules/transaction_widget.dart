@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gs3_test/app/views/widgets/atoms/icon_box_widget.dart';
 import 'package:flutter_gs3_test/core/constants/padding_size.dart';
 import 'package:flutter_gs3_test/core/utils/format_date.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class TransactionWidget extends StatelessWidget {
   final int id;
