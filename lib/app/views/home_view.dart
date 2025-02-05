@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gs3_test/app/views/widgets/templates/empty_view.dart';
 import 'package:flutter_gs3_test/core/shared/app_bar_widget.dart';
-import 'package:flutter_gs3_test/core/shared/bottom_navigation_custom_widget.dart';
+import 'package:flutter_gs3_test/core/shared/bottom_navigation_bar_widget.dart';
 import 'package:flutter_gs3_test/app/views/widgets/organisms/card_list_widget.dart';
 import 'package:flutter_gs3_test/app/views/widgets/organisms/favorite_list_widget.dart';
 import 'package:flutter_gs3_test/app/views/widgets/molecules/header_widget.dart';
@@ -159,7 +159,7 @@ class _HomeViewState extends State<HomeView> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationCustomWidget(
+      bottomNavigationBar: BottomNavigationBarWidget(
         currentIndex: _selectedIndex,
         onTap: (index) => _onNavigationTapped(index),
       ),

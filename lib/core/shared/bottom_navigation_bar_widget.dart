@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class BottomNavigationCustomWidget extends StatefulWidget {
+class BottomNavigationBarWidget extends StatefulWidget {
   final ValueChanged<int>? onTap;
   final int currentIndex;
-  const BottomNavigationCustomWidget({
+  const BottomNavigationBarWidget({
     super.key,
     this.onTap,
     this.currentIndex = 0,
   });
 
   @override
-  State<BottomNavigationCustomWidget> createState() =>
-      _BottomNavigationCustomWidgetState();
+  State<BottomNavigationBarWidget> createState() =>
+      _BottomNavigationBarWidgetState();
 }
 
-class _BottomNavigationCustomWidgetState
-    extends State<BottomNavigationCustomWidget> {
+class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
