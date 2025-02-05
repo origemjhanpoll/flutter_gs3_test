@@ -64,10 +64,7 @@ class _CardWidgetState extends State<CardWidget> {
                         ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     height: 54,
                   ),
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: PaddingSize.medium,
-                    horizontal: PaddingSize.medium,
-                  ),
+                  contentPadding: EdgeInsets.all(PaddingSize.medium),
                   title: Text('●●●● ${widget.number}'),
                   subtitle: Text(widget.bank),
                   titleTextStyle: theme.textTheme.titleMedium!.copyWith(
@@ -111,7 +108,7 @@ class _CardWidgetState extends State<CardWidget> {
                               : "●●●●"),
                           titleTextStyle: theme.textTheme.bodySmall!.copyWith(
                               color: colorContrast.withValues(alpha: 0.8)),
-                          subtitleTextStyle: theme.textTheme.titleLarge!
+                          subtitleTextStyle: theme.textTheme.titleMedium!
                               .copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: colorContrast),
@@ -130,7 +127,7 @@ class _CardWidgetState extends State<CardWidget> {
                           ),
                           titleTextStyle: theme.textTheme.bodySmall!.copyWith(
                               color: colorContrast.withValues(alpha: 0.8)),
-                          subtitleTextStyle: theme.textTheme.titleLarge!
+                          subtitleTextStyle: theme.textTheme.titleMedium!
                               .copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: colorContrast),

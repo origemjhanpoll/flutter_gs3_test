@@ -18,6 +18,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  final ScrollController _scrollControllerCard = ScrollController();
   final ScrollController _scrollController = ScrollController();
   final PageController _pageController = PageController();
   late CardListViewModel viewModel;
@@ -29,7 +30,7 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     viewModel = context.read<CardListViewModel>();
-    _scrollController.addListener(_updateSelectedCardIndex);
+    _scrollControllerCard.addListener(_updateSelectedCardIndex);
   }
 
   void _onItemTapped(int index) {
@@ -44,9 +45,14 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void _updateSelectedCardIndex() {
-    final newIndex = (_scrollController.offset / cardSize.width).round();
+    final newIndex = (_scrollControllerCard.offset / cardSize.width).round();
     if (newIndex != viewModel.selectedCardIndex) {
       viewModel.setSelectedCardIndex(newIndex);
+      _scrollController.animateTo(
+        150.0,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
     }
   }
 
@@ -61,7 +67,7 @@ class _HomeViewState extends State<HomeView> {
 
   void _scrollToIndex(int index) {
     final double offset = index * cardSize.width;
-    _scrollController.animateTo(
+    _scrollControllerCard.animateTo(
       offset,
       duration: Duration(milliseconds: 300),
       curve: Curves.easeInOut,
@@ -70,8 +76,10 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void dispose() {
-    _scrollController.removeListener(_updateSelectedCardIndex);
+    _scrollControllerCard.removeListener(_updateSelectedCardIndex);
+    _scrollControllerCard.dispose();
     _scrollController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -148,7 +156,7 @@ class _HomeViewState extends State<HomeView> {
                     SizedBox(
                       height: cardSize.height + PaddingSize.extraLarge,
                       child: ListView.separated(
-                        controller: _scrollController,
+                        controller: _scrollControllerCard,
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
                         itemCount: cards.length,
@@ -179,80 +187,97 @@ class _HomeViewState extends State<HomeView> {
                           .copyWith(bottom: 0),
                       child: Divider(height: 1),
                     ),
-                    MyFavoritesWidget(
-                        onTapItem: (item) =>
-                            goNewPage(title: item, context: context),
-                        onTap: () => goNewPage(
-                            title: 'Meus favoritos', context: context)),
-                    ListTile(
-                      title: Text('Últimos lançamentos'),
-                      contentPadding: EdgeInsets.zero.copyWith(
-                          left: PaddingSize.medium, right: PaddingSize.small),
-                      titleTextStyle: theme.textTheme.titleMedium!
-                          .copyWith(fontWeight: FontWeight.bold),
-                      trailing: InkWell(
-                        borderRadius: BorderRadius.circular(12.0),
-                        onTap: () => goNewPage(
-                            title: 'Últimos Lançamentos', context: context),
-                        child: Padding(
-                          padding: EdgeInsets.all(PaddingSize.small),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                'Ver todos',
-                                style: theme.textTheme.bodySmall!
-                                    .copyWith(color: theme.primaryColor),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        controller: _scrollController,
+                        child: Column(
+                          children: [
+                            MyFavoritesWidget(
+                                onTapItem: (item) =>
+                                    goNewPage(title: item, context: context),
+                                onTap: () => goNewPage(
+                                    title: 'Meus favoritos', context: context)),
+                            ListTile(
+                              title: Text('Últimos lançamentos'),
+                              contentPadding: EdgeInsets.zero.copyWith(
+                                  left: PaddingSize.medium,
+                                  right: PaddingSize.small),
+                              titleTextStyle: theme.textTheme.titleMedium!
+                                  .copyWith(fontWeight: FontWeight.bold),
+                              trailing: InkWell(
+                                borderRadius: BorderRadius.circular(12.0),
+                                onTap: () => goNewPage(
+                                    title: 'Últimos Lançamentos',
+                                    context: context),
+                                child: Padding(
+                                  padding: EdgeInsets.all(PaddingSize.small),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        'Ver todos',
+                                        style: theme.textTheme.bodySmall!
+                                            .copyWith(
+                                                color: theme.primaryColor),
+                                      ),
+                                      Icon(Icons.chevron_right,
+                                          color: theme.primaryColor),
+                                    ],
+                                  ),
+                                ),
                               ),
-                              Icon(Icons.chevron_right,
-                                  color: theme.primaryColor),
-                            ],
-                          ),
+                            ),
+                            transactions.isNotEmpty
+                                ? ListView.separated(
+                                    itemCount: transactions.length,
+                                    shrinkWrap: true,
+                                    primary: false,
+                                    itemBuilder: (context, index) {
+                                      final transaction = transactions[index];
+                                      final showDate = index == 0 ||
+                                          formatDate(transactions[index - 1]
+                                                  .date) !=
+                                              formatDate(transaction.date);
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          if (showDate)
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal:
+                                                      PaddingSize.medium),
+                                              child: Text(
+                                                formatDate(transaction.date),
+                                                style: theme
+                                                    .textTheme.bodyLarge!
+                                                    .copyWith(
+                                                  color: theme.primaryColor,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          TransactionWidget(
+                                            id: transaction.id,
+                                            merchant: transaction.merchant,
+                                            amount: transaction.amount,
+                                            installments:
+                                                transaction.installments,
+                                            date: transaction.date,
+                                            category: transaction.category,
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) =>
+                                        Divider(indent: 16.0, endIndent: 16.0),
+                                  )
+                                : Center(
+                                    child: Text('Nenhum transação disponível.'))
+                          ],
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: transactions.isNotEmpty
-                          ? ListView.separated(
-                              itemCount: transactions.length,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                final transaction = transactions[index];
-                                final showDate = index == 0 ||
-                                    formatDate(transactions[index - 1].date) !=
-                                        formatDate(transaction.date);
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    if (showDate)
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: PaddingSize.medium),
-                                        child: Text(
-                                          formatDate(transaction.date),
-                                          style: theme.textTheme.bodyLarge!
-                                              .copyWith(
-                                            color: theme.primaryColor,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    TransactionWidget(
-                                      id: transaction.id,
-                                      merchant: transaction.merchant,
-                                      amount: transaction.amount,
-                                      installments: transaction.installments,
-                                      date: transaction.date,
-                                      category: transaction.category,
-                                    ),
-                                  ],
-                                );
-                              },
-                              separatorBuilder: (context, index) =>
-                                  Divider(indent: 16.0, endIndent: 16.0),
-                            )
-                          : Center(child: Text('Nenhum transação disponível.')),
-                    )
                   ],
                 );
               }

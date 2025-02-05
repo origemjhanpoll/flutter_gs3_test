@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
     final color = Color(0xFF346CBD);
     return MaterialApp(
       title: 'Meus Cartões',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: color,
         colorScheme: ColorScheme.fromSeed(seedColor: color),
