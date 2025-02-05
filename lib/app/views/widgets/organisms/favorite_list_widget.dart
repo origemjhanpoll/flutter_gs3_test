@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'favorite_widget.dart';
+import '../molecules/favorite_widget.dart';
 
 class FavoriteListWidget extends StatelessWidget {
   final ValueChanged<FavoriteType>? onTap;

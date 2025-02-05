@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gs3_test/app/viewmodels/card_list_viewmodel.dart';
-import 'package:flutter_gs3_test/app/views/web_blocked_view.dart';
+import 'package:flutter_gs3_test/app/views/widgets/templates/web_blocked_view.dart';
 import 'package:provider/provider.dart';
 import 'views/home_view.dart';
 

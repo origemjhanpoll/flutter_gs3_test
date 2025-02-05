@@ -3,7 +3,7 @@ import 'package:flutter_gs3_test/app/models/transaction.dart';
 import 'package:flutter_gs3_test/core/constants/padding_size.dart';
 import 'package:flutter_gs3_test/core/utils/format_date.dart';
 
-import 'transaction_widget.dart';
+import '../molecules/transaction_widget.dart';
 
 class TransactionListWidget extends StatelessWidget {
   final List<Transaction> transactions;

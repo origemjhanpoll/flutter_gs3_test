@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gs3_test/app/models/bank_card.dart';
 import 'package:flutter_gs3_test/core/constants/padding_size.dart';
 
-import 'card_widget.dart';
+import '../molecules/card_widget.dart';
 
 class CardListWidget extends StatefulWidget {
   final ValueChanged<int>? onTap;

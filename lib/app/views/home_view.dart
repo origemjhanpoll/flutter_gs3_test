@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gs3_test/app/views/empty_view.dart';
-import 'package:flutter_gs3_test/app/views/widgets/bottom_navigation_custom_widget.dart';
-import 'package:flutter_gs3_test/app/views/widgets/card_list_widget.dart';
-import 'package:flutter_gs3_test/app/views/widgets/favorite_list_widget.dart';
-import 'package:flutter_gs3_test/app/views/widgets/header_widget.dart';
-import 'package:flutter_gs3_test/app/views/widgets/transaction_list_widget.dart';
+import 'package:flutter_gs3_test/app/views/widgets/templates/empty_view.dart';
+import 'package:flutter_gs3_test/core/shared/app_bar_widget.dart';
+import 'package:flutter_gs3_test/core/shared/bottom_navigation_custom_widget.dart';
+import 'package:flutter_gs3_test/app/views/widgets/organisms/card_list_widget.dart';
+import 'package:flutter_gs3_test/app/views/widgets/organisms/favorite_list_widget.dart';
+import 'package:flutter_gs3_test/app/views/widgets/molecules/header_widget.dart';
+import 'package:flutter_gs3_test/app/views/widgets/organisms/transaction_list_widget.dart';
 import 'package:flutter_gs3_test/core/constants/padding_size.dart';
 import 'package:flutter_gs3_test/core/utils/go_next_page.dart';
+import 'package:flutter_gs3_test/core/shared/drawer_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/card_list_viewmodel.dart';
@@ -62,45 +64,8 @@ class _HomeViewState extends State<HomeView> {
 
     return Scaffold(
       extendBody: true,
-      drawer: Drawer(
-        child: Center(
-          child: Text.rich(
-            TextSpan(
-              text: 'Olá, ',
-              children: [
-                TextSpan(
-                    text: 'Cliente',
-                    style: TextStyle(fontWeight: FontWeight.bold))
-              ],
-            ),
-          ),
-        ),
-      ),
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: theme.primaryColor),
-        forceMaterialTransparency: true,
-        centerTitle: true,
-        title: Text.rich(
-          TextSpan(
-            text: 'Olá, ',
-            children: [
-              TextSpan(
-                  text: 'Cliente',
-                  style: TextStyle(fontWeight: FontWeight.bold))
-            ],
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => goNewPage(title: 'Mensagens', context: context),
-            icon: Icon(Icons.message_outlined),
-          ),
-          IconButton(
-            onPressed: () => goNewPage(title: 'Notificações', context: context),
-            icon: Icon(Icons.notifications_none),
-          )
-        ],
-      ),
+      drawer: DrawerWidget(),
+      appBar: AppBarWidget(),
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {
