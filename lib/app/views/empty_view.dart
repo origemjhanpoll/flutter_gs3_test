@@ -14,8 +14,10 @@ class EmptyView extends StatelessWidget {
               )
             : null,
       ),
-      body: Center(
-        child: Text('Página vazia'),
+      body: SafeArea(
+        child: Center(
+          child: Text('Página vazia'),
+        ),
       ),
     );
   }

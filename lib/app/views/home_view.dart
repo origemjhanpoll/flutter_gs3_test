@@ -82,6 +82,7 @@ class _HomeViewState extends State<HomeView> {
     cardSize = Size(screen.width - PaddingSize.extraLarge, 140.0);
 
     return Scaffold(
+      extendBody: true,
       drawer: Drawer(
         child: Center(
           child: Text.rich(
@@ -262,50 +263,65 @@ class _HomeViewState extends State<HomeView> {
           EmptyView(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: theme.primaryColor,
-        unselectedItemColor: theme.hintColor,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            label: 'Home',
-            icon: SvgPicture.asset('assets/icons/tab-home.svg'),
-            activeIcon: SvgPicture.asset(
-              'assets/icons/tab-home.svg',
-              colorFilter:
-                  ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
+      bottomNavigationBar: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(36.0)),
+          border: Border.all(
+            color: Colors.grey.shade300,
+            width: 1,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(1.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(36.0)),
+            child: BottomNavigationBar(
+              onTap: _onItemTapped,
+              currentIndex: _selectedIndex,
+              selectedItemColor: theme.primaryColor,
+              unselectedItemColor: theme.hintColor,
+              type: BottomNavigationBarType.fixed,
+              items: [
+                BottomNavigationBarItem(
+                  label: 'Home',
+                  icon: SvgPicture.asset('assets/icons/tab-home.svg'),
+                  activeIcon: SvgPicture.asset(
+                    'assets/icons/tab-home.svg',
+                    colorFilter:
+                        ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
+                  ),
+                ),
+                BottomNavigationBarItem(
+                  label: 'Fatura',
+                  icon: SvgPicture.asset('assets/icons/tab-invoice.svg'),
+                  activeIcon: SvgPicture.asset(
+                    'assets/icons/tab-invoice.svg',
+                    colorFilter:
+                        ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
+                  ),
+                ),
+                BottomNavigationBarItem(
+                  label: 'Cartão',
+                  icon: SvgPicture.asset('assets/icons/tab-card.svg'),
+                  activeIcon: SvgPicture.asset(
+                    'assets/icons/tab-card.svg',
+                    colorFilter:
+                        ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
+                  ),
+                ),
+                BottomNavigationBarItem(
+                  label: 'Shop',
+                  icon: SvgPicture.asset('assets/icons/tab-shop.svg'),
+                  activeIcon: SvgPicture.asset(
+                    'assets/icons/tab-shop.svg',
+                    colorFilter:
+                        ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
+                  ),
+                ),
+              ],
             ),
           ),
-          BottomNavigationBarItem(
-            label: 'Fatura',
-            icon: SvgPicture.asset('assets/icons/tab-invoice.svg'),
-            activeIcon: SvgPicture.asset(
-              'assets/icons/tab-invoice.svg',
-              colorFilter:
-                  ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'Cartão',
-            icon: SvgPicture.asset('assets/icons/tab-card.svg'),
-            activeIcon: SvgPicture.asset(
-              'assets/icons/tab-card.svg',
-              colorFilter:
-                  ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'Shop',
-            icon: SvgPicture.asset('assets/icons/tab-shop.svg'),
-            activeIcon: SvgPicture.asset(
-              'assets/icons/tab-shop.svg',
-              colorFilter:
-                  ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
-            ),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        ),
       ),
     );
   }
