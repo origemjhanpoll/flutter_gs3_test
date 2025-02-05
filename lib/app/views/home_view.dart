@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gs3_test/app/views/empty_view.dart';
 import 'package:flutter_gs3_test/app/views/widgets/bottom_navigation_custom_widget.dart';
 import 'package:flutter_gs3_test/app/views/widgets/card_list_widget.dart';
-import 'package:flutter_gs3_test/app/views/widgets/favorites_widget.dart';
+import 'package:flutter_gs3_test/app/views/widgets/favorite_list_widget.dart';
 import 'package:flutter_gs3_test/app/views/widgets/header_widget.dart';
 import 'package:flutter_gs3_test/app/views/widgets/transaction_list_widget.dart';
 import 'package:flutter_gs3_test/core/constants/padding_size.dart';
@@ -22,7 +22,6 @@ class _HomeViewState extends State<HomeView> {
   final ScrollController _scrollController = ScrollController();
   final PageController _pageController = PageController();
   late CardListViewModel viewModel;
-  late Size cardSize;
 
   int _selectedIndex = 0;
 
@@ -60,8 +59,6 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final screen = MediaQuery.sizeOf(context);
-    cardSize = Size(screen.width - PaddingSize.extraLarge, 140.0);
 
     return Scaffold(
       extendBody: true,
@@ -155,11 +152,10 @@ class _HomeViewState extends State<HomeView> {
                                     theme.colorScheme.primary, BlendMode.srcIn),
                               ),
                             ),
-                            FavoritesWidget(
-                                onTapItem: (item) =>
-                                    goNewPage(title: item, context: context),
-                                onTap: () => goNewPage(
-                                    title: 'Meus favoritos', context: context)),
+                            FavoriteListWidget(
+                              onTap: (item) =>
+                                  goNewPage(title: item.text, context: context),
+                            ),
                             HeaderWidget(
                               onTap: () => goNewPage(
                                   title: 'Últimos lançamentos',
