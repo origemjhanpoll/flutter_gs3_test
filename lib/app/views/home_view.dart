@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gs3_test/app/views/widgets/card_widget.dart';
 import 'package:flutter_gs3_test/app/views/widgets/my_favorites_widget.dart';
 import 'package:flutter_gs3_test/core/constants/padding_size.dart';
+import 'package:flutter_gs3_test/core/utils/go_next_page.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/card_list_viewmodel.dart';
 import 'widgets/transaction_widget.dart';
@@ -65,14 +66,13 @@ class _HomeViewState extends State<HomeView> {
     cardSize = Size(screen.width - PaddingSize.extraLarge, 140.0);
 
     return Scaffold(
+      drawer: Drawer(
+        child: Center(child: Text('Drawer vazio')),
+      ),
       appBar: AppBar(
+        iconTheme: IconThemeData(color: theme.primaryColor),
         forceMaterialTransparency: true,
         centerTitle: true,
-        leading: IconButton(
-          color: theme.primaryColor,
-          onPressed: () {},
-          icon: Icon(Icons.menu),
-        ),
         title: Text.rich(
           TextSpan(
             text: 'Olá, ',
@@ -85,13 +85,11 @@ class _HomeViewState extends State<HomeView> {
         ),
         actions: [
           IconButton(
-            color: theme.primaryColor,
-            onPressed: () {},
+            onPressed: () => goNewPage(title: 'Mensagens', context: context),
             icon: Icon(Icons.message_outlined),
           ),
           IconButton(
-            color: theme.primaryColor,
-            onPressed: () {},
+            onPressed: () => goNewPage(title: 'Notificações', context: context),
             icon: Icon(Icons.notifications_none),
           )
         ],
@@ -145,7 +143,11 @@ class _HomeViewState extends State<HomeView> {
                       EdgeInsets.all(PaddingSize.medium).copyWith(bottom: 0),
                   child: Divider(height: 1),
                 ),
-                MyFavoritesWidget(),
+                MyFavoritesWidget(
+                    onTapItem: (item) =>
+                        goNewPage(title: item, context: context),
+                    onTap: () =>
+                        goNewPage(title: 'Meus favoritos', context: context)),
                 ListTile(
                   title: Text('Últimos lançamentos'),
                   contentPadding: EdgeInsets.zero.copyWith(
@@ -154,7 +156,8 @@ class _HomeViewState extends State<HomeView> {
                       .copyWith(fontWeight: FontWeight.bold),
                   trailing: InkWell(
                     borderRadius: BorderRadius.circular(12.0),
-                    onTap: () {},
+                    onTap: () => goNewPage(
+                        title: 'Últimos Lançamentos', context: context),
                     child: Padding(
                       padding: EdgeInsets.all(PaddingSize.small),
                       child: Row(

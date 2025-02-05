@@ -3,7 +3,10 @@ import 'package:flutter_gs3_test/core/constants/padding_size.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MyFavoritesWidget extends StatelessWidget {
-  const MyFavoritesWidget({super.key});
+  final VoidCallback? onTap;
+  final Function(String item) onTapItem;
+
+  const MyFavoritesWidget({super.key, this.onTap, required this.onTapItem});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,7 @@ class MyFavoritesWidget extends StatelessWidget {
               .copyWith(fontWeight: FontWeight.bold),
           trailing: InkWell(
             borderRadius: BorderRadius.circular(12.0),
-            onTap: () {},
+            onTap: onTap,
             child: Padding(
               padding: EdgeInsets.all(PaddingSize.small),
               child: Row(
@@ -74,28 +77,32 @@ class MyFavoritesWidget extends StatelessWidget {
               shrinkWrap: true,
               itemBuilder: (_, index) {
                 final favorite = favorites[index];
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: PaddingSize.medium),
-                  child: Column(
-                    spacing: PaddingSize.small * 0.5,
-                    children: [
-                      DecoratedBox(
-                          decoration: BoxDecoration(
-                              color: theme.colorScheme.secondaryContainer,
-                              borderRadius: BorderRadius.circular(12.0)),
-                          child: Padding(
-                            padding: EdgeInsets.all(PaddingSize.medium),
-                            child: SvgPicture.asset(
-                              favorite.asset,
-                              colorFilter: ColorFilter.mode(
-                                  theme.colorScheme.primary, BlendMode.srcIn),
-                            ),
-                          )),
-                      Text(
-                        favorite.text,
-                        style: theme.textTheme.bodySmall,
-                      )
-                    ],
+                return InkWell(
+                  onTap: () => onTapItem(favorite.text),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: PaddingSize.medium),
+                    child: Column(
+                      spacing: PaddingSize.small * 0.5,
+                      children: [
+                        DecoratedBox(
+                            decoration: BoxDecoration(
+                                color: theme.colorScheme.secondaryContainer,
+                                borderRadius: BorderRadius.circular(12.0)),
+                            child: Padding(
+                              padding: EdgeInsets.all(PaddingSize.medium),
+                              child: SvgPicture.asset(
+                                favorite.asset,
+                                colorFilter: ColorFilter.mode(
+                                    theme.colorScheme.primary, BlendMode.srcIn),
+                              ),
+                            )),
+                        Text(
+                          favorite.text,
+                          style: theme.textTheme.bodySmall,
+                        )
+                      ],
+                    ),
                   ),
                 );
               }),
