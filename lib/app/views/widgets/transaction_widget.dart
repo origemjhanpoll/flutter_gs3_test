@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gs3_test/core/constants/padding_size.dart';
+import 'package:flutter_gs3_test/core/utils/format_date.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 
 class TransactionWidget extends StatelessWidget {
   final int id;
@@ -27,7 +27,7 @@ class TransactionWidget extends StatelessWidget {
 
     return ListTile(
       title: Text(merchant),
-      subtitle: Text(_formatDate(date)),
+      subtitle: Text(formatDateWithHours(date)),
       leading: DecoratedBox(
         decoration: BoxDecoration(
             color: theme.colorScheme.secondaryContainer,
@@ -61,10 +61,6 @@ class TransactionWidget extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _formatDate(DateTime date) {
-    return DateFormat("dd/MM 'às' HH:mm").format(date);
   }
 
   String _getCategoryIcon(String category) {

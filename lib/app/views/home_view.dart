@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gs3_test/app/views/widgets/card_widget.dart';
 import 'package:flutter_gs3_test/app/views/widgets/my_favorites_widget.dart';
 import 'package:flutter_gs3_test/core/constants/padding_size.dart';
+import 'package:flutter_gs3_test/core/utils/format_date.dart';
 import 'package:flutter_gs3_test/core/utils/go_next_page.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/card_list_viewmodel.dart';
@@ -192,13 +193,34 @@ class _HomeViewState extends State<HomeView> {
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             final transaction = transactions[index];
-                            return TransactionWidget(
-                              id: transaction.id,
-                              merchant: transaction.merchant,
-                              amount: transaction.amount,
-                              installments: transaction.installments,
-                              date: transaction.date,
-                              category: transaction.category,
+                            final showDate = index == 0 ||
+                                formatDate(transactions[index - 1].date) !=
+                                    formatDate(transaction.date);
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (showDate)
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: PaddingSize.medium),
+                                    child: Text(
+                                      formatDate(transaction.date),
+                                      style:
+                                          theme.textTheme.bodyLarge!.copyWith(
+                                        color: theme.primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                TransactionWidget(
+                                  id: transaction.id,
+                                  merchant: transaction.merchant,
+                                  amount: transaction.amount,
+                                  installments: transaction.installments,
+                                  date: transaction.date,
+                                  category: transaction.category,
+                                ),
+                              ],
                             );
                           },
                           separatorBuilder: (context, index) =>
