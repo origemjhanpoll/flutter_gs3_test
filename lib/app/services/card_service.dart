@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../models/bank_card.dart';
 
@@ -16,7 +17,7 @@ class CardService {
           .toList();
       return cards;
     } else {
-      throw Exception('Falha ao carregar os cartões');
+      throw HttpException('Falha ao carregar os cartões');
     }
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../models/bank_card.dart';
@@ -26,6 +28,8 @@ class CardListViewModel with ChangeNotifier {
 
     try {
       _cards = await _cardService.loadCards();
+    } on HttpException catch (e) {
+      _error = e.message;
     } catch (e) {
       _error = 'Erro ao carregar os cartões: $e';
     } finally {
