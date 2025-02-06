@@ -1,9 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-
-import '../models/bank_card.dart';
+import '../models/card.dart';
 import '../services/card_service.dart';
+import 'package:http/http.dart' as http;
 
 class CardListViewModel with ChangeNotifier {
   List<BankCard> _cards = [];
@@ -19,7 +18,10 @@ class CardListViewModel with ChangeNotifier {
   bool get isError => _error != null;
   int get selectedCardIndex => _selectedCardIndex;
 
-  final CardService _cardService = CardService();
+  final CardService _cardService;
+
+  CardListViewModel({CardService? cardService})
+      : _cardService = cardService ?? CardService(client: http.Client());
 
   Future<void> loadCards() async {
     _isLoading = true;

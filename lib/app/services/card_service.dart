@@ -1,14 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:flutter_gs3_test/app/models/card.dart';
 import 'package:http/http.dart' as http;
-import '../models/bank_card.dart';
 
 class CardService {
+  final http.Client client;
+
+  CardService({required this.client});
+
   final String _url =
       'https://raw.githubusercontent.com/origemjhanpoll/flutter_GS3_test/refs/heads/main/test/json/response.json';
 
   Future<List<BankCard>> loadCards() async {
-    final response = await http.get(Uri.parse(_url));
+    final response = await client.get(Uri.parse(_url));
 
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);

@@ -1,0 +1,8 @@
+{
+  "id": 101,
+  "merchant": "Apple",
+  "amount": "545,99",
+  "installments": 12,
+  "date": "2025-02-03T22:35:00Z",
+  "category": "entertainment"
+}
