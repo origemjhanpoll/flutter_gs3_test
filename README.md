@@ -9,8 +9,6 @@ Este aplicativo exibe uma lista de cartões do cliente, permitindo visualizar tr
   <img src="assets/media/mobile.gif" width="45%" />
 </p>
 
----
-
 ## 🚀 Tecnologias Utilizadas
 
 - **Linguagem:** Dart
@@ -42,6 +40,16 @@ O projeto segue uma estrutura modularizada:
  │   ├── constants           # Constantes globais do app
 ```
 
+## ✅ Testes
+
+O projeto inclui testes unitários e de widgets para garantir a qualidade do código e a estabilidade das funcionalidades. Os testes são escritos utilizando o pacote `mockito` para simulação de dependências e `flutter_test` para validação de widgets.
+
+Para executar os testes, utilize o seguinte comando:
+
+```bash
+flutter test
+```
+
 ## 🛠 Dependências Externas
 
 As seguintes bibliotecas foram utilizadas no projeto:
@@ -64,7 +72,7 @@ dev_dependencies:
 
 Certifique-se de ter instalado:
 
-- **Flutter** (https://flutter.dev/docs/get-started/install)
+- **Flutter** ([https://flutter.dev/docs/get-started/install](https://flutter.dev/docs/get-started/install))
 - **Dart**
 - **Emulador ou dispositivo físico**
 
@@ -84,6 +92,7 @@ Certifique-se de ter instalado:
    ```
 
 3. Execute o aplicativo:
+
    ```bash
    flutter run
    ```
